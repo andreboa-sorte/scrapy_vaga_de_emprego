@@ -15,30 +15,29 @@ botão de proximo - //*[@id="resultado-busca-vagas"]/footer/div[2]/ul/li[9]/a/@h
 class ProcuravagaSpider(scrapy.Spider):
     name = 'procuraVaga'
     #allowed_domains = ['www.manager.com.br/empregos-desenvolvedor-javascript/']
-    start_urls = ['http://www.manager.com.br/empregos-desenvolvedor-javascript//']
+    start_urls = ['http://www.manager.com.br/empregos-desenvolvedor-javascript/']
 
 
     def parse(self, response):
         lista= response.xpath('//*[@class="lista-resultado-busca"]')
 
         for itemlita in lista:
-            url=itemlita.xpaht('//article/header/h2/a/@href').extract_first()
-            yield scrapy.Request(response.urljoin(url=url, callback=self.pega_info())
+            url=itemlita.xpath('//article/header/h2/a/@href').extract_first()
+            yield scrapy.Request(url=url, callback=self.pega_info)
+        proxpag=response.xpath('//*[@id="resultado-busca-vagas"]/footer/div[2]/ul/li[9]/a/@href')
 
-        prox_pag=response.xpath('//*[@id="resultado-busca-vagas"]/footer/div[2]/ul/li[9]/a/@href')
-
-        if prox_pag:
-            yield scrapy.Request(url=prox_pag,callback=self.parse())
+        if proxpag:
+            yield scrapy.Request(url=proxpag.extract_first(),callback=self.parse)
 
 
     def pega_info(self,response):
-        titulo_vaga=response.xpath('//article/header/h1/span')
+        titulovaga=response.xpath('//article/header/h1/span/text()').extract_first()
         salario=response.xpath('//article/div[1]/dl[1]/dd')
         cidade=response.xpath('//article/div[1]/dl[2]/dd/abbr')
         descriacao=response.xpath('//article/div[2]/div[2]/p')
 
         yield {
-            'titulo_vaga':titulo_vaga,
+            'titulovaga':titulovaga,
             'salario': salario,
             'cidade': cidade,
             'descriacao': descriacao,
