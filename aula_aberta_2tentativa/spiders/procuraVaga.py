@@ -29,7 +29,7 @@ class ProcuravagaSpider(scrapy.Spider):
         if proxpag:
             yield scrapy.Request(url=proxpag.extract_first(),callback=self.parse)
 
-
+# corrigir
     def pega_info(self,response):
         titulovaga=response.xpath('//article/header/h1/span/text()').extract_first()
         salario=response.xpath('//article/div[1]/dl[1]/dd')
