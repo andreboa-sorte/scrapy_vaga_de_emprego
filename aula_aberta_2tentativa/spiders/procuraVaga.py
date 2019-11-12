@@ -32,9 +32,9 @@ class ProcuravagaSpider(scrapy.Spider):
 # corrigir
     def pega_info(self,response):
         titulovaga=response.xpath('//article/header/h1/span/text()').extract_first()
-        salario=response.xpath('//article/div[1]/dl[1]/dd')
-        cidade=response.xpath('//article/div[1]/dl[2]/dd/abbr')
-        descriacao=response.xpath('//article/div[2]/div[2]/p')
+        salario=response.xpath('//article/div[1]/dl[1]/dd/text()').extract_first()
+        cidade=response.xpath('//article/div[1]/dl[2]/dd/abbr/@title').extract_first()
+        descriacao=response.xpath('//article/div[2]/div[2]/p/text()').extract_first()
 
         yield {
             'titulovaga':titulovaga,
