@@ -24,6 +24,7 @@ class ProcuravagaSpider(scrapy.Spider):
         for itemlita in lista:
             url=itemlita.xpath('//article/header/h2/a/@href').extract_first()
             yield scrapy.Request(url=url, callback=self.pega_info)
+
         proxpag=response.xpath('//*[@id="resultado-busca-vagas"]/footer/div[2]/ul/li[9]/a/@href')
 
         if proxpag:
